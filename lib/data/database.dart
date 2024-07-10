@@ -2,23 +2,21 @@ import 'package:hive/hive.dart';
 
 class ToDoDataBase {
   List toDoList = [];
-  // reference our box
-  final _myBox = Hive.box('myBox');
+  final _myBox = Hive.box('mybox'); // Consistent box name
 
-  void createInitalData(){
+  void createInitalData() {
     toDoList = [
-      ["Make Food",false],
-      ["Do Exercise",false],
+      ["Make Food", false],
+      ["Do Exercise", false],
     ];
   }
-  // LOAD THE DATA FROM DATABASE
-  void loadData(){
-    toDoList = _myBox.get("TODOLIST");
+
+  // Load data asynchronously
+  Future<void> loadData() async {
+    toDoList = _myBox.get("TODOLIST") ?? []; // Handle potential null value
   }
 
-  // UPDATE THE DATABASE
-  void updateDataBase(){
-    _myBox.put("TODOLIST",toDoList);
+  void updateDataBase() {
+    _myBox.put("TODOLIST", toDoList);
   }
-
 }

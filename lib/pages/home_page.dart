@@ -12,28 +12,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  // reference the hive box
+  // Reference the Hive box (make sure the name matches main.dart)
   final _myBox = Hive.box('mybox');
   ToDoDataBase db = ToDoDataBase();
 
   @override
-  void initState(){
-    // if this is the first time opening the app so create default data
-  if(_myBox.get("TODOLIST") == null){
-    db.createInitalData();
-  }
-  else{
-    // there already exists data
-    db.loadData();
-  }
+  void initState() {
     super.initState();
+    _loadInitialData(); // Load data asynchronously
   }
 
-  //text controller
+  // Load data and update UI
+  Future<void> _loadInitialData() async {
+    if (_myBox.get("TODOLIST") == null) {
+      db.createInitalData();
+    } else {
+      await db.loadData(); // Await data loading
+    }
+    setState(() {}); // Rebuild UI after data is loaded
+  }
+
+  // Text controller
   final _controller = TextEditingController();
 
-  // checkBox was tapped
+  // Checkbox was tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
       db.toDoList[index][1] = !db.toDoList[index][1];
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
     db.updateDataBase();
   }
 
-  // save new task
+  // Save new task
   void saveNewTask() {
     setState(() {
       db.toDoList.add([_controller.text, false]);
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
     db.updateDataBase();
   }
 
-  // create a new task
+  // Create a new task
   void createNewTask() {
     showDialog(
       context: context,
@@ -60,12 +62,11 @@ class _HomePageState extends State<HomePage> {
           controller: _controller,
           onSave: saveNewTask,
           onCancel: () => Navigator.of(context).pop(),
-        );
-      },
+        );},
     );
   }
 
-  // delete task
+  // Delete task
   void deleteTask(int index) {
     setState(() {
       db.toDoList.removeAt(index);
@@ -86,9 +87,7 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
-        child: const Icon(
-          Icons.add,
-        ),
+        child: const Icon(Icons.add),
       ),
       body: ListView.builder(
         itemCount: db.toDoList.length,
