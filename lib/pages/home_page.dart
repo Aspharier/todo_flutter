@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:todo_flutter/data/database.dart';
 import 'package:todo_flutter/utilities/dialog_box.dart';
@@ -77,15 +80,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFbde0fe),
+      backgroundColor: const Color(0xFF111A24),
       appBar: AppBar(
-        title: const Center(
-          child: Text('TO DO'),
+        title: Center(
+          child: Text('TO DO',
+          style: GoogleFonts.oswald(fontSize: 30,
+          color: Color(0xFFF8EE00),
+          fontWeight: FontWeight.bold,
+          ),
+          ),
         ),
-        backgroundColor: const Color(0xFFa2d2ff),
+        backgroundColor: const Color(0xFF111A24),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFFF8EE00),
         onPressed: createNewTask,
         child: const Icon(Icons.add),
       ),
